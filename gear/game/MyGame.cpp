@@ -176,10 +176,15 @@ void CMyGame::OnUpdate()
 			// Check intersection of the "Guard - Player" sight line with both diagonals of the tile.
 			// If there is intersection - there is no killer - so, m_pKiller = NULL;
 
+			if (Intersection(m_player.GetPos(), pGuard->GetPos(), pTile->GetBottomLeft(), pTile->GetTopRight()))
+			{
+				m_pKiller = NULL;
+			}
+
 			// TO DO:
 			// Call the Intersection function twice, once for each diagonal of the tile
 			// If the function returns true in any case, call the following:
-				m_pKiller = NULL;
+	
 			
 
 
@@ -197,7 +202,7 @@ void CMyGame::OnUpdate()
 			// Normalise both vectors for the dot!
 			// If the result is greater than 0.5, the player is within 60 degrees from the front of the guard.
 			// Otherwise, the guard should not see the player (again, m_pKiller = NULL)
-		
+			if (Dot(Normalise(v), Normalise(pGuard->GetVelocity())) <= 0.5)m_pKiller = NULL;
 		
 
 
@@ -223,6 +228,11 @@ void CMyGame::OnDraw(CGraphics* g)
 	m_player.Draw(g);
 	for (CSprite* pGuard : m_guards)
 		pGuard->Draw(g);
+
+	for (CSprite* pTiles : m_tiles)
+	{
+		g->DrawLine(pTiles->GetTopRight(), pTiles->GetBottomLeft(), 4, CColor::Blue());
+	}
 
 	if (m_pKiller)
 	{
