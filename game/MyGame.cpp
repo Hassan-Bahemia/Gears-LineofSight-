@@ -173,10 +173,18 @@ void CMyGame::OnUpdate()
 		// browse through all tiles - if line of sight test shows any tile to obscure the player, then we have no killer after all
 		for (CSprite* pTile : m_tiles)
 		{
+			CVector c(pTile->GetRight(), pTile->GetBottom());
+			CVector d(pTile->GetLeft(), pTile->GetTop());
+			CVector e(pTile->GetLeft(), pTile->GetBottom());
+			CVector f(pTile->GetRight(), pTile->GetTop());
 			// Check intersection of the "Guard - Player" sight line with both diagonals of the tile.
 			// If there is intersection - there is no killer - so, m_pKiller = NULL;
 
-			if (Intersection(m_player.GetPos(), pGuard->GetPos(), pTile->GetBottomLeft(), pTile->GetTopRight()))
+			if (Intersection(m_player.GetPos(), pGuard->GetPos(), c, d))
+			{
+				m_pKiller = NULL;
+			}
+			if (Intersection(m_player.GetPos(), pGuard->GetPos(), e, f))
 			{
 				m_pKiller = NULL;
 			}
