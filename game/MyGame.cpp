@@ -232,14 +232,22 @@ void CMyGame::OnUpdate()
 
 void CMyGame::OnDraw(CGraphics* g)
 {
+
 	m_tiles.for_each(&CSprite::Draw, g);
 	m_player.Draw(g);
 	for (CSprite* pGuard : m_guards)
 		pGuard->Draw(g);
 
-	for (CSprite* pTiles : m_tiles)
+	for (CSprite* pTile : m_tiles)
 	{
-		g->DrawLine(pTiles->GetTopRight(), pTiles->GetBottomLeft(), 4, CColor::Blue());
+		CVector c(pTile->GetRight(), pTile->GetBottom());
+		CVector d(pTile->GetLeft(), pTile->GetTop());
+		CVector e(pTile->GetLeft(), pTile->GetBottom());
+		CVector f(pTile->GetRight(), pTile->GetTop());
+
+		g->DrawLine(c, d, 4, CColor::Blue());
+		g->DrawLine(e, f, 4, CColor::Blue());
+
 	}
 
 	if (m_pKiller)
